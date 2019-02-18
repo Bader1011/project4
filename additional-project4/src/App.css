@@ -22,11 +22,26 @@
   color: #61dafb;
 }
 
+ul{
+
+  display: inline ;
+  
+}
+li{
+
+  display: inline-block;
+  border: solid 1.5em rgb(255, 255, 255);
+
+  color: blue;
+  background-color: white;
+}
+
 body{
 
   background-color:rgb(112, 175, 194);
   text-align: center;
   font-family: 'Times New Roman', Times, serif;
+ 
  
 }
 h1{
@@ -36,7 +51,7 @@ h1{
 
 .v ,.u ,.o{
 
-border: solid 1px black;
+border: solid 1px gray;
 padding-bottom: 20px;
 }
 

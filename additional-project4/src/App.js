@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { getUser, logout } from "./services/authService";
 import NavBar from "./components/NavBar";
-import AuthForm from "./components/Auth";
+import Auth from "./components/AuthForm";
 import "./App.css";
 import ShowVolunteer from './components/ShowVolunteer';
 import ShowUsers from './components/ShowUsers';
@@ -16,13 +16,27 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
+      users: null,
       organization: [],
       activeShow: '',
-      activePage: "",
       edit: false,
-      editeData: null,
+      EditData: null,
+      form: "signup",
     };
+  }
+
+  activeShow = (activeShow) => {
+
+    console.log("\n\n\n\n &&&&&&&&& \n\n\n your are in ", activeShow)
+    this.setState({ activeShow })
+  }
+
+
+  checkForUser() {
+    const user = getUser();
+    if (user) {
+      this.setState({ user });
+    }
   }
 
 
@@ -36,16 +50,6 @@ class App extends Component {
     this.setState({ user: null });
   };
 
-  getProducts = () => { };
-
-  componentDidMount(){
-    this.getData();
-    this.getDataOrganization();
-
-    
-  }
-
-
   changeForm = type => {
     console.log(type);
     this.setState({
@@ -53,14 +57,23 @@ class App extends Component {
     });
   };
 
+  componentDidMount() {
+    this.checkForUser();
+    this.getData();
+    this.getDataOrganization();
 
-  getData(){
+
+  }
+
+
+
+  getData() {
     const url = 'http://localhost:3000/volunteer/'
     fetch(url)
       .then(response => response.json())
       .then(data => {
         console.log(data)
-        this.setState({users: data})
+        this.setState({ users: data })
         //this.login();
       })
       .catch(error => {
@@ -68,21 +81,22 @@ class App extends Component {
       })
   }
 
-  getDataOrganization(){
+  getDataOrganization() {
     const url = 'http://localhost:3000/volunteer/organization'
     fetch(url)
       .then(response => response.json())
       .then(data => {
         console.log(data)
-        this.setState({organization: data})
+        this.setState({ organization: data })
         // this.login();
       })
       .catch(error => {
-        console.log(error);
+        console.error(error)
+        // console.log(error);
       })
   }
 
-  delete(id){
+  delete(id) {
     const url = `http://localhost:3000/volunteer/users/${id}`
     fetch(url, {
       method: 'POST',
@@ -98,36 +112,36 @@ class App extends Component {
       })
   }
 
-  usersData(){
+  usersData() {
     const user = this.state.users.map(el => {
-      if( el.is_volunteer === false) {
-        return <ShowUsers delete={this.delete.bind(this)}  editeData={this.editeData.bind(this)}user={el} key={el.id} /> 
+      if (el.is_volunteer === false) {
+        return <ShowUsers delete={this.delete.bind(this)} editeData={this.editeData.bind(this)} user={el} key={el.id} />
       }
     })
     return user
   }
 
-  volunteerData(){
+  volunteerData() {
     const volunteer = this.state.users.map(el => {
-      if( el.is_volunteer === true) {
+      if (el.is_volunteer === true) {
         return <ShowVolunteer delete={this.delete.bind(this)} editeData={this.editeData.bind(this)} volunteer={el} key={el.id} />
       }
     })
     return volunteer
   }
 
-  organizationData(){
+  organizationData() {
     const organization = this.state.organization.map(el => {
-        return <ShowOrganisation organization={el} key={el.id} />
+      return <ShowOrganisation organization={el} key={el.id} />
     })
     return organization
   }
 
 
-  
 
-  editeData(data){
-    this.setState({edit: true, editeData: data})
+
+  editeData(data) {
+    this.setState({ edit: true, editeData: data })
     console.log(data)
     //return <EditData updateData={this.updateData.bind(this)} user={data}/>
   }
@@ -157,56 +171,71 @@ class App extends Component {
   }
 
 
+  getProducts = () => { };
 
-  
-  renderShow(){
-    if(this.state.activeShow === 'users'){
+  // renderShow() {
+  //   if (this.state.activeShow === 'users') {
+  //     return this.usersData()
+  //   } else if (this.state.activeShow === 'volunteer') {
+  //     return this.volunteerData()
+  //   } else if (this.state.activeShow === 'organization') {
+  //     return this.organizationData()
+
+  //   } else if (this.state.activeShow === 'lessons') {
+  //     return <ShowLessons />
+  //   } else if (this.state.user === null) {
+  //     return (
+  //       <div>
+  //         <Auth form={this.state.form} onLogin={this.login} />
+  //       </div>
+  //     )
+  //   }
+  // }
+
+  renderShow() {
+    if (this.state.activeShow === 'users') {
+      console.log(this.state.user)
       return this.usersData()
-    } else if(this.state.activeShow === 'volunteer'){
+
+    } else if (this.state.activeShow === 'volunteer') {
       return this.volunteerData()
-    } else if(this.state.activeShow === 'organization'){
+
+    } else if (this.state.activeShow === 'organization') {
       return this.organizationData()
-    
-  } else if(this.state.activeShow === 'lessons'){
-    return <ShowLessons/>
-  }
-  }
-
-  changeActivePage = (activePage) => {
-
-    console.log("\n\n\n\n AAAAAA \n\n\n you're in ", activePage)
-    this.setState({ activePage })
-  }
+    } else if (this.state.activeShow === 'lessons') {
+      return <ShowLessons />
+    }else if (this.state.user === null) {
+      return (
+        <div>
+          <Auth form={this.state.form} onLogin={this.login} />
+        </div>
+      )
+    }
+}
 
   render() {
     return (
-       <div>
+      <div>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <header>
 
-
-<NavBar
+          <NavBar
             user={this.state.user}
             changeForm={this.changeForm}
             logout={this.logout}
             getProducts={this.getProducts}
-            changeActivePage={this.changeActivePage}
+            activeShow={this.activeShow}
           />
-      
-      
-        <AuthForm form={this.state.form} onLogin={this.login} />
-       
-      
-      <div>
-
-        {this.renderShow()}
-        <button onClick={() => {this.setState({activeShow: 'users'})}}> Users List</button>
-        <button onClick={() => {this.setState({activeShow: 'volunteer'})}}> Volunteer List</button>
-        <button onClick={() => {this.setState({activeShow: 'organization'})}}> Organization and Volunteer List</button><br/>
-        <button onClick={() => {this.setState({activeShow: 'lessons'})}}>  lessons</button>
-       {this.state.editeData ?<EditData updateData={this.updateData.bind(this)} user={this.state.editeData}/> : false }
-       
-       
-    
-      </div>
+        </header>
+        <div className="home">
+{this.state.editeData ?<EditData updateData={this.updateData.bind(this)} user={this.state.editeData}/> : false }
+          <div className="container">
+          <Auth form={this.state.form} onLogin={this.login} />
+            {this.state ? this.renderShow() : <Auth form={this.state.form} onLogin={this.login} />}
+            
+          </div>
+        </div>
       </div>
     );
   }

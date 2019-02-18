@@ -13,10 +13,10 @@ class ShowVolunteer extends Component {
           Email: {this.props.volunteer.email}
           <br />
         </h2>
-        <h2>
+        {/* <h2>
           Password: {this.props.volunteer.password}
           <br />
-        </h2>
+        </h2> */}
         <h2>
           Phone: {this.props.volunteer.phone}
           <br />

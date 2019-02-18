@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
 const volunteerController = require("./controllers/volunteerController");
-app.use("/volunteer/", volunteerController);
+app.use("/volunteer", volunteerController);
 
 app.get('/', (req, res) => {
     res.send('Volunteer');

@@ -32,7 +32,7 @@ user.getAll = (req, res, next) => {
 }
 
 user.getAllOrganization = (req, res, next) => {
-    db.manyOrNone("SELECT * FROM organization;")
+    db.manyOrNone("select organization.*, users.name as username from users , organization where users.id = user_id ;")
       .then((data) => {
         res.locals.organization = data
         next();

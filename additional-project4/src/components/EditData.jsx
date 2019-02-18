@@ -32,38 +32,42 @@ class EditData extends Component {
   render() {
     console.log(this.props.user);
     return (
-      <div>
+      <div><br/> <br/> 
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <label> Name: </label>
+          <label>Name:</label>
           <input
             type="text"
             name="name"
             onChange={this.handleChange.bind(this)}
             placeholder={this.props.user.name}
-          />
-          <hr />
+          /> <br/><br/>
+          
+          <label>Email:</label>
           <input
             type="text"
             name="email"
             onChange={this.handleChange.bind(this)}
             placeholder={this.props.user.email}
-          />
-          <hr />
+          /> <br/><br/>
+          
+          <label>Phone:</label>
           <input
             type="number"
             name="phone"
             onChange={this.handleChange.bind(this)}
             placeholder={this.props.user.phone}
-          />
-          <label>Password</label>
+          /> <br/> <br/>
+          <label>Password:</label>
           <input
             type="password"
             name="password"
             onChange={this.handleChange.bind(this)}
             placeholder={this.props.user.password}
-          />
-          <button className="submit">submit</button>
+          /> <br/> <br/>
+          <button className="submit">Submit</button>
+        
         </form>
+        <hr /> 
       </div>
     );
   }

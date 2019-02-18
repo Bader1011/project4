@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const Volunteer = require("../models/Volunteer");
 const auth = require("../middleware/auth");
 
-router.get('/', Volunteer.getAll, (req, res) => {
+router.get('/', Volunteer.getAll,  (req, res) => {
   res.json(res.locals.users);
 })
 
@@ -33,16 +33,16 @@ router.post("/users", Volunteer.findEmail, Volunteer.create , (req, res) => {
     res.status(400).send("user is already reigister");
   } else {
 
-    console.log("\n\n\n\n\n\n\n\n_________________" , req.user)
-    const { email, name, id , is_volunteer } = req.user;
+  console.log("\n\n\n\n\n\n\n\n_________________" , req.user)
+  const {email, name, id , is_volunteer  } = req.user;
 
-    // const email = req.user.email ;
-    // const name = req.user.name ;
+  // const email = req.user.email ;
+  // const name = req.user.name ;
 
-    const token = jwt.sign({ email, name, id , is_volunteer }, process.env.JWT_KEY);
+  const token = jwt.sign({ email, name, id , is_volunteer }, process.env.JWT_KEY);
 
-    res.send({ token });
-  }
+  res.send({ token });
+}
 });
 
 router.put("/users/:id",  auth,  Volunteer.update, (req, res) => {
